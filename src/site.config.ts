@@ -1,13 +1,13 @@
 // Edit this file to re-label the entire site. Header, Footer, the homepage
 // and SEO defaults all read from here instead of hardcoding copy.
 export const SITE = {
-  name: 'John Doe',
-  role: 'Product design & frontend engineering',
-  email: 'johndoe@example.com',
-  tagline: 'I design and build interfaces that hold up under real use.',
+  name: 'Pranjal Sharma',
+  role: 'Linux & Server Administrator',
+  email: 'pranjalsharma01@outlook.com',
+  tagline: 'I monitor, maintain and improve web performance',
   description:
-    'Portfolio of John Doe — product design and frontend engineering, with an emphasis on speed, clarity, and the details most people skip.',
-  status: 'Currently building at Studio Co · open to new work, Q3 2026',
+    'Hi I am Pranjal Sharma. I do Linux and Server Administration work.',
+  status: 'Currently volunteering for OpenStatus',
   social: [
     { label: 'GitHub', href: 'https://github.com/your-username' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/your-username' },
