@@ -1,15 +1,36 @@
 ---
 import { SITE } from "@/site.config";
 
+import Status from "@/components/status.astro";
 const year = new Date().getFullYear();
 ---
 
-<footer class="border-line border-t items-center flex">
+<footer class="border-line border-t items-center flex flex-col">
+  <section class="w-full p-3">
+    <p
+      class="uppercase font-bold text-sm py-3 decoration-dotted underline underline-offset-6"
+    >
+      let's connect
+    </p>
+    <div class="flex flex-wrap gap-x-4 gap-y-2 text-xl">
+      {
+        SITE.social.map((social) => (
+          <a
+            href={social.href}
+            rel="noopener noreferrer"
+            class="underline decoration-1 underline-offset-4 hover:text-[var(--signal)] transition-colors"
+          >
+            {social.label}
+          </a>
+        ))
+      }
+    </div>
+  </section>
   <div
     class="text-ink-soft mx-auto flex max-w-3xl flex-col gap-4 px-6 py-8 font-mono text-xs sm:flex-row sm:items-center sm:justify-between"
   >
     <nav class="flex items-center gap-4" aria-label="Social">
-      <p>● All systems operational</p>
+      <Status />
     </nav>
   </div>
 </footer>

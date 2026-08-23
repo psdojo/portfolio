@@ -32,6 +32,9 @@ importers:
       '@tabler/icons':
         specifier: ^3.46.0
         version: 3.46.0
+      '@tabler/icons-astro':
+        specifier: ^3.46.0
+        version: 3.46.0(astro@7.0.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@24.13.2)(@vercel/functions@3.9.5)(jiti@2.7.0)(yaml@2.9.0))
       '@tabler/icons-react':
         specifier: ^3.46.0
         version: 3.46.0(react@19.2.8)
@@ -1048,6 +1051,11 @@ packages:
   '@starwind-ui/runtime@1.2.0':
     resolution: {integrity: sha512-9AXolYEJ9yHhacFOxJDha4+q/gxLtZ8C+f1gPEZQKigSALoIVCtmgCnO9JvslP3V5+TPsldyzJeBK6t3JHxf9A==}
     engines: {node: '>=22.12.0'}
+
+  '@tabler/icons-astro@3.46.0':
+    resolution: {integrity: sha512-hLbPYqiVOAe6SPNRnXyMCmeVJpcqoIiXDqlMjb2deMdhZXZU6FSOtUVUG08T6zBYXqP0CieZZAkvrFgIFHfeCg==}
+    peerDependencies:
+      astro: '>=4.0.0'
 
   '@tabler/icons-react@3.46.0':
     resolution: {integrity: sha512-CCm7xJWhDT2PH4ZIFkP6AgYKtVhq0gpYkjUN+GVh1AzmIQaa77OW0bQPBPQiTE0PsXMR9oSxFqA3qBglzPyrVQ==}
@@ -4474,6 +4482,11 @@ snapshots:
     dependencies:
       '@floating-ui/dom': 1.8.0
       embla-carousel: 8.6.0
+
+  '@tabler/icons-astro@3.46.0(astro@7.0.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@24.13.2)(@vercel/functions@3.9.5)(jiti@2.7.0)(yaml@2.9.0))':
+    dependencies:
+      '@tabler/icons': 3.46.0
+      astro: 7.0.4(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@24.13.2)(@vercel/functions@3.9.5)(jiti@2.7.0)(yaml@2.9.0)
 
   '@tabler/icons-react@3.46.0(react@19.2.8)':
     dependencies:

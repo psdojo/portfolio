@@ -13,7 +13,7 @@ const allWork = (await getCollection("work", ({ data }) => !data.draft)).sort(
   title="Work"
   description="Selected projects in product design and frontend engineering."
 >
-  <section class="mx-auto max-w-3xl px-6">
+  <section class="mx-auto max-w-3xl px-3">
     <div>
       {allWork.map((entry) => <WorkRow entry={entry} />)}
     </div>

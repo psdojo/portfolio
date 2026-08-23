@@ -11,8 +11,7 @@ export const SITE = {
   social: [
     { label: "GitHub", href: "https://github.com/psdojo" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/pranjal-sharma-73ba0a193" },
-    { label: "Dev.to", href: "https://dev.to" },
-    { label: "X", href: "https://x.com" },
+    { label: "Dev.to", href: "https://dev.to/pranjal-sharma" },
     { label: "Email", href: "mailto:pranjalsharma01@outlook.com" },
   ],
   locale: "en",

@@ -82,115 +82,95 @@ const ossContributions = await fetchGithubContributions("psdojo");
 ---
 
 <BaseLayout title={SITE.name}>
-  <section class="mx-auto max-w-3xl">
-    <section class="mx-auto p-6">
+  <section class="mx-auto max-w-3xl px-3">
+    <section class="mx-auto py-3">
       <div class="text-lg border-b border-[var(--line)] flex flex-row gap-4">
-        <img src={photo.src} class="h-20 w-20 rounded-full object-cover" />
-        <div class="flex flex-col items-start justify-center">
-          <p class="font-bold uppercase">Pranjal Sharma</p>
-          <p>Linux Systems and Infrastucture</p>
+        <img src={photo.src} class="h-20 w-20 object-cover" />
+        <div
+          class="flex flex-col items-start justify-center font-display tracking-wide"
+        >
+          <p class="font-bold text-xl uppercase">Pranjal Sharma</p>
+          <p class="text-sm">Linux Systems and Infrastucture</p>
         </div>
       </div>
     </section>
-    <section class="mx-auto p-6">
-      <div>
-        <h2
-          class="uppercase font-bold text-sm py-3 decoration-dotted underline underline-offset-6"
-        >
-          nice to meet you
-        </h2>
-      </div>
-      <div class="font-mono flex flex-col gap-4 prose md:prose-xl">
-        <p class="text-base/8">
-          I'm Pranjal Sharma, a Linux & server support engineer. I keep servers,
-          hosting, and cloud infra running when things break. Cloudways, AWS,
-          Docker, and enough Linux under the hood to actually fix what's wrong.
-          Currently contributing to OpenStatus, an open-source uptime monitoring
-          platform. I like fixing the stuff nobody notices until it's broken.
-        </p>
-      </div>
-    </section>
-
-    <section class="mx-auto p-6">
-      <div>
-        <h2
-          class="uppercase font-bold text-sm py-3 decoration-dotted underline underline-offset-6"
-        >
-          my recent work
-        </h2>
-      </div>
-
-      <div class="flex flex-col">
-        {recentArticles.map((article) => <WorkRow entry={article} />)}
-      </div>
-    </section>
-
-    <section class="mx-auto p-6">
-      <div
-        class="flex items-center justify-between border-b border-[var(--line)] py-3"
-      >
-        <h2
-          class="font-mono text-sm uppercase tracking-[0.2em] font-bold text-[var(--ink)] decoration-dotted underline underline-offset-6"
-        >
-          OSS Contributions
-        </h2>
-      </div>
-
-      <div class="flex flex-col gap-3 font-mono text-base">
-        {
-          ossContributions.length === 0 ? (
-            <p class="text-[var(--ink-soft)] italic text-sm">
-              No recent external commits found on layout runtime.
-            </p>
-          ) : (
-            ossContributions.map((contrib: any) => (
-              <div class="flex flex-wrap items-baseline justify-between gap-x-2 border-b border-dashed border-[var(--line)] pb-2">
-                <div class="flex items-center gap-x-2">
-                  <a
-                    href={contrib.url}
-                    target="_self"
-                    class="text-[var(--ink)] hover:text-[var(--signal)] "
-                  >
-                    {contrib.title}
-                  </a>
-                </div>
-
-                <div class="flex items-center gap-x-2 text-sm text-[var(--ink-soft)]">
-                  <span>at</span>
-                  <a
-                    href={contrib.repoUrl}
-                    target="_self"
-                    class="font-bold hover:text-[var(--ink)] underline decoration-1"
-                  >
-                    {contrib.repo}
-                  </a>
-                  <span class="text-xs">[{contrib.date}]</span>
-                </div>
-              </div>
-            ))
-          )
-        }
-      </div>
-    </section>
-    <section class="mx-auto p-6">
-      <p
+    <div>
+      <h2
         class="uppercase font-bold text-sm py-3 decoration-dotted underline underline-offset-6"
       >
-        let's connect
+        nice to meet you
+      </h2>
+    </div>
+    <div class="font-mono flex flex-col gap-4 prose md:prose-xl">
+      <p class="text-base/8">
+        I'm Pranjal Sharma, a Linux & server support engineer. I keep servers,
+        hosting, and cloud infra running when things break. Cloudways, AWS,
+        Docker, and enough Linux under the hood to actually fix what's wrong.
+        Currently contributing to OpenStatus, an open-source uptime monitoring
+        platform. I like fixing the stuff nobody notices until it's broken.
       </p>
-      <div class="flex flex-wrap gap-x-4 gap-y-2 text-xl">
-        {
-          SITE.social.map((social) => (
-            <a
-              href={social.href}
-              rel="noopener noreferrer"
-              class="underline decoration-1 underline-offset-4 hover:text-[var(--signal)] transition-colors"
-            >
-              {social.label}
-            </a>
+    </div>
+  </section>
+
+  <section class="mx-auto p-3">
+    <div>
+      <h2
+        class="uppercase font-bold text-sm py-3 decoration-dotted underline underline-offset-6"
+      >
+        my recent work
+      </h2>
+    </div>
+
+    <div class="flex flex-col">
+      {recentArticles.map((article) => <WorkRow entry={article} />)}
+    </div>
+  </section>
+
+  <section class="mx-auto p-3">
+    <div
+      class="flex items-center justify-between border-b border-[var(--line)] py-3"
+    >
+      <h2
+        class="font-mono text-sm uppercase tracking-[0.2em] font-bold text-[var(--ink)] decoration-dotted underline underline-offset-6"
+      >
+        OSS Contributions
+      </h2>
+    </div>
+
+    <div class="flex flex-col gap-3 font-mono text-base">
+      {
+        ossContributions.length === 0 ? (
+          <p class="text-[var(--ink-soft)] italic text-sm">
+            No recent external commits found on layout runtime.
+          </p>
+        ) : (
+          ossContributions.map((contrib: any) => (
+            <div class="flex flex-wrap items-baseline justify-between gap-x-2 border-b border-dashed border-[var(--line)] pb-2">
+              <div class="flex items-center gap-x-2">
+                <a
+                  href={contrib.url}
+                  target="_self"
+                  class="text-[var(--ink)] hover:text-[var(--signal)] hover:underline active:underline focus:underline"
+                >
+                  {contrib.title}
+                </a>
+              </div>
+
+              <div class="flex items-center gap-x-2 text-sm text-[var(--ink-soft)]">
+                <span>at</span>
+                <a
+                  href={contrib.repoUrl}
+                  target="_self"
+                  class="font-bold hover:text-[var(--ink)] underline decoration-1"
+                >
+                  {contrib.repo}
+                </a>
+                <span class="text-xs">[{contrib.date}]</span>
+              </div>
+            </div>
           ))
-        }
-      </div>
-    </section>
+        )
+      }
+    </div>
   </section>
 </BaseLayout>

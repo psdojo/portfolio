@@ -1,9 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap");
+
 @import "tailwindcss";
 @import "@fontsource-variable/geist";
 @plugin '@tailwindcss/typography';
 
-/* ADDED: Fetching Syne font vectors directly from the Google Fonts CDN network */
-@import url('https://googleapis.com');
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -51,10 +52,10 @@
   --color-surface: var(--surface);
   --spacing: 0.3125rem;
 
-  --font-sans: "Syne", sans-serif;
-  --font-display: "Syne", sans-serif;
-  --font-body: "Syne", monospace;
-  --font-mono: "Syne", monospace;
+  --font-sans: "Inter", sans-serif;
+  --font-display: "Roboto", sans-serif;
+  --font-body: "Inter", monospace;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 @layer base {
