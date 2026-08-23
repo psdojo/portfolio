@@ -1,16 +1,16 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
-import tailwindcss from '@tailwindcss/vite';
-
+import { defineConfig } from "astro/config";
+import sitemap from "@astrojs/sitemap";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@astrojs/react";
 // Replace with your production URL after deploying to Vercel / Netlify.
 // It powers the sitemap and the canonical / Open Graph URLs in BaseLayout.
-const SITE_URL = 'https://astro-starter-portfolio.vercel.app';
+const SITE_URL = "https://astro-starter-portfolio.vercel.app";
 
 export default defineConfig({
   site: SITE_URL,
 
-  integrations: [sitemap()],
+  integrations: [sitemap(), react()],
 
   // Prefetches internal links on hover/viewport entry for near-instant navigation.
   prefetch: true,

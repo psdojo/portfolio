@@ -1,78 +1,199 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import Button from '@/components/Button.astro';
-import WorkRow from '@/components/WorkRow.astro';
-import SectionHeading from '@/components/SectionHeading.astro';
-import { SITE } from '@/site.config';
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import WorkRow from "@/components/WorkRow.astro";
+import { SITE } from "@/site.config";
 
-const allWork = await getCollection('work', ({ data }) => !data.draft);
-const sorted = [...allWork].sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const featured = sorted.filter((entry) => entry.data.featured);
-const rest = sorted.filter((entry) => !entry.data.featured);
-const selected = [...featured, ...rest].slice(0, 5);
+// --- Existing Data Block ---
+const allWork = await getCollection("work", ({ data }) => !data.draft);
+const sorted = [...allWork].sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const recentArticles = sorted.slice(0, 3);
+
+// --- UPDATED: Search-Driven GitHub OSS Fetcher ---
+async function fetchGithubContributions(username: string) {
+  const token = import.meta.env.GITHUB_TOKEN;
+  if (!token) {
+    console.warn("⚠️ GITHUB_TOKEN is missing in your env file.");
+    return [];
+  }
+
+  // Uses high-utility search query syntax to target external PRs directly
+  const searchQuery = `author:${username} is:pr is:public -user:${username}`;
+
+  const query = `
+    query($searchQuery: String!) {
+      search(query: $searchQuery, type: ISSUE, first: 10) {
+        nodes {
+          ... on PullRequest {
+            title
+            url
+            createdAt
+            repository {
+              nameWithOwner
+              url
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch("https://api.github.com/graphql", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "User-Agent": "Astro-Portfolio",
+      },
+      body: JSON.stringify({ query, variables: { searchQuery } }),
+    });
+
+    const json = await response.json();
+
+    if (json.errors) {
+      console.error("GraphQL errors:", json.errors);
+      return [];
+    }
+
+    const prs = json.data?.search?.nodes || [];
+    return prs
+      .map((pr: any) => ({
+        title: pr.title,
+        url: pr.url,
+        repo: pr.repository.nameWithOwner,
+        repoUrl: pr.repository.url,
+        date: new Date(pr.createdAt).toLocaleDateString("en-IN", {
+          month: "short",
+          year: "numeric",
+        }),
+      }))
+      .slice(0, 4);
+  } catch (error) {
+    console.error("Failed to fetch GitHub contributions:", error);
+    return [];
+  }
+}
+
+// Execute using your exact target profile username string
+const ossContributions = await fetchGithubContributions("psdojo");
 ---
 
 <BaseLayout title={SITE.name}>
-  <section class="mx-auto max-w-3xl px-6 pt-16 pb-20 sm:pt-24">
-    <p class="text-ink-soft mb-6 inline-flex items-center gap-2 font-mono text-xs">
-      <span class="bg-signal h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
-      {SITE.status}
-    </p>
-
-    <h1 class="font-display text-ink max-w-2xl text-4xl leading-[1.1] font-medium sm:text-5xl">
-      {SITE.tagline}
-    </h1>
-
-    <p class="text-ink-soft mt-6 max-w-md">
-      {SITE.role}
-    </p>
-
-    <div class="mt-8 flex flex-wrap items-center gap-3">
-      <Button href="/work" variant="solid">View the work →</Button>
-      <Button href="#contact" variant="ghost">Say hello</Button>
-    </div>
-  </section>
-
-  <section id="work" class="mx-auto max-w-3xl px-6 pb-20">
-    <SectionHeading eyebrow="Selected work" count={allWork.length} />
-    <div>
-      {selected.map((entry) => <WorkRow entry={entry} />)}
-    </div>
-    {
-      allWork.length > selected.length && (
-        <div class="mt-6">
-          <a
-            href="/work"
-            class="text-ink-soft hover:text-signal font-mono text-xs transition-colors"
-          >
-            View all {allWork.length} projects →
-          </a>
+  <section class="mx-auto max-w-3xl">
+    <section class="mx-auto p-6">
+      <div class="text-lg border-b border-[var(--line)] flex flex-row gap-4">
+        <img
+          src="public/photo.png"
+          class="h-20 w-20 rounded-full object-cover"
+        />
+        <div class="flex flex-col items-start justify-center">
+          <p class="font-bold uppercase">Pranjal Sharma</p>
+          <p>Linux Systems and Infrastucture</p>
         </div>
-      )
-    }
-  </section>
+      </div>
+    </section>
+    <section class="mx-auto p-6">
+      <div>
+        <h2
+          class="uppercase font-bold text-sm py-3 decoration-dotted underline underline-offset-6"
+        >
+          nice to meet you
+        </h2>
+      </div>
+      <div class="font-mono flex flex-col gap-4 prose md:prose-xl">
+        <p class="text-base/8">
+          I'm Pranjal Sharma, a Linux & server support engineer. I keep servers,
+          hosting, and cloud infra running when things break. Cloudways, AWS,
+          Docker, and enough Linux under the hood to actually fix what's wrong.
+          Currently contributing to OpenStatus, an open-source uptime monitoring
+          platform. I like fixing the stuff nobody notices until it's broken.
+        </p>
+      </div>
+    </section>
 
-  <section id="about" class="mx-auto max-w-3xl px-6 pb-20">
-    <SectionHeading eyebrow="About" />
-    <p class="text-ink-soft max-w-xl">
-      {SITE.description}
-    </p>
-    <a href="/about" class="text-signal mt-4 inline-block font-mono text-xs hover:underline">
-      More about how I work →
-    </a>
-  </section>
+    <section class="mx-auto p-6">
+      <div>
+        <h2
+          class="uppercase font-bold text-sm py-3 decoration-dotted underline underline-offset-6"
+        >
+          my recent work
+        </h2>
+      </div>
 
-  <section id="contact" class="mx-auto max-w-3xl px-6 pb-24">
-    <SectionHeading eyebrow="Let's talk" />
-    <p class="font-display text-ink max-w-lg text-2xl sm:text-3xl">
-      Have something worth building?
-    </p>
-    <a
-      href={`mailto:${SITE.email}`}
-      class="text-signal mt-4 inline-flex items-center gap-2 font-mono hover:underline"
-    >
-      {SITE.email}
-    </a>
+      <div class="flex flex-col">
+        {recentArticles.map((article) => <WorkRow entry={article} />)}
+      </div>
+    </section>
+
+    <section class="mx-auto p-6">
+      <div
+        class="flex items-center justify-between border-b border-[var(--line)] py-3"
+      >
+        <h2
+          class="font-mono text-sm uppercase tracking-[0.2em] font-bold text-[var(--ink)] decoration-dotted underline underline-offset-6"
+        >
+          OSS Contributions
+        </h2>
+      </div>
+
+      <div class="flex flex-col gap-3 font-mono text-base">
+        {
+          ossContributions.length === 0 ? (
+            <p class="text-[var(--ink-soft)] italic text-sm">
+              No recent external commits found on layout runtime.
+            </p>
+          ) : (
+            ossContributions.map((contrib) => (
+              <div class="flex flex-wrap items-baseline justify-between gap-x-2 border-b border-dashed border-[var(--line)] pb-2">
+                <div class="flex items-center gap-x-2">
+                  <a
+                    href={contrib.url}
+                    target="_self"
+                    class="text-[var(--ink)] hover:text-[var(--signal)] "
+                  >
+                    {contrib.title}
+                  </a>
+                </div>
+
+                <div class="flex items-center gap-x-2 text-sm text-[var(--ink-soft)]">
+                  <span>at</span>
+                  <a
+                    href={contrib.repoUrl}
+                    target="_self"
+                    class="font-bold hover:text-[var(--ink)] underline decoration-1"
+                  >
+                    {contrib.repo}
+                  </a>
+                  <span class="text-xs">[{contrib.date}]</span>
+                </div>
+              </div>
+            ))
+          )
+        }
+      </div>
+    </section>
+    <section class="mx-auto p-6">
+      <p
+        class="uppercase font-bold text-sm py-3 decoration-dotted underline underline-offset-6"
+      >
+        let's connect
+      </p>
+      <div class="flex flex-wrap gap-x-4 gap-y-2 text-xl">
+        {
+          SITE.social.map((social) => (
+            <a
+              href={social.href}
+              rel="noopener noreferrer"
+              class="underline decoration-1 underline-offset-4 hover:text-[var(--signal)] transition-colors"
+            >
+              {social.label}
+            </a>
+          ))
+        }
+      </div>
+    </section>
   </section>
 </BaseLayout>

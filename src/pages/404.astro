@@ -1,12 +1,86 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/site.config";
 ---
 
-<BaseLayout title="Page not found">
-  <section class="mx-auto flex max-w-3xl flex-col items-start gap-4 px-6 py-32">
-    <p class="text-ink-soft font-mono text-xs tracking-[0.2em] uppercase">404</p>
-    <h1 class="font-display text-ink text-3xl font-medium">This page doesn't exist.</h1>
-    <p class="text-ink-soft">The link might be broken, or the page may have moved.</p>
-    <a href="/" class="text-signal font-mono text-sm hover:underline">← Back home</a>
+<BaseLayout title={`404 Not Found | ${SITE.name}`}>
+  <section class="mx-auto max-w-3xl px-6 font-mono">
+    <div
+      class="flex flex-col gap-6 border border-[var(--line)] bg-[var(--surface)] p-8 rounded shadow-sm relative overflow-hidden"
+    >
+      {/* Top Status Bar Decoration */}
+      <div
+        class="flex items-center justify-between border-b border-[var(--line)] pb-4 mb-2"
+      >
+        <div class="flex items-center gap-2">
+          <span class="h-3 w-3 rounded-full bg-red-500/30 border border-red-500"
+          ></span>
+          <span
+            class="text-xs uppercase tracking-wider text-[var(--ink-soft)] font-bold"
+            >SYSTEM_KERNEL_PANIC</span
+          >
+        </div>
+        <span class="text-xs text-[var(--ink-soft)]">ERR_CODE: 0x404</span>
+      </div>
+
+      {/* Glitched Title Vibe */}
+      <div class="flex flex-col gap-2">
+        <h1
+          class="text-5xl font-black italic tracking-tighter text-[var(--ink)] antialiased transform -rotate-1 select-none"
+          style="text-shadow: 2px 2px 0px rgba(255, 0, 0, 0.2), -2px -2px 0px rgba(0, 0, 255, 0.2);"
+        >
+          // 404_NOT_FOUND
+        </h1>
+        <p
+          class="text-sm font-bold text-[var(--ink-soft)] uppercase tracking-[0.15em] mt-1"
+        >
+          Target route could not be resolved by host framework.
+        </p>
+      </div>
+
+      {/* Terminal Log Content */}
+      <div
+        class="bg-[var(--paper)] p-4 rounded border border-[var(--line)] text-sm flex flex-col gap-1 text-[var(--ink)]"
+      >
+        <p>
+          <span class="text-[var(--ink-soft)] select-none">~ $</span> status --check
+          --all
+        </p>
+        <p class="text-red-500 font-bold">
+          [CRITICAL] Directory tree verification failed.
+        </p>
+        <p class="text-[var(--ink-soft)]">
+          [INFO] The file path you requested does not exist or has been shifted
+          during an environment migration update.
+        </p>
+        <p>
+          <span class="text-[var(--ink-soft)] select-none">~ $</span>
+          <span class="animate-pulse bg-[var(--ink)] text-[var(--paper)] px-1"
+            >_</span
+          >
+        </p>
+      </div>
+
+      {/* Action Links */}
+      <div
+        class="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4 pt-2 border-t border-[var(--line)] text-base"
+      >
+        <a
+          href="/"
+          class="underline decoration-1 underline-offset-4 font-bold text-[var(--ink)] hover:text-[var(--signal)]"
+        >
+          cd /home
+        </a>
+
+        <span class="text-[var(--ink-soft)] text-sm select-none">//</span>
+
+        <a
+          href="/work"
+          class="underline decoration-1 underline-offset-4 text-[var(--ink-soft)] hover:text-[var(--ink)]"
+        >
+          ls ./case-studies
+        </a>
+      </div>
+    </div>
   </section>
 </BaseLayout>

@@ -1,9 +1,9 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { formatDate } from '@/utils/formatDate';
+import type { CollectionEntry } from "astro:content";
+import { formatDate } from "@/utils/formatDate";
 
 interface Props {
-  entry: CollectionEntry<'work'>;
+  entry: CollectionEntry<"work">;
 }
 
 const { entry } = Astro.props;
@@ -14,28 +14,13 @@ const stamp = formatDate(date, "compact");
 
 <a
   href={`/work/${entry.id}`}
-  class="group border-line hover:border-signal grid grid-cols-[3.5rem_1fr_auto] items-center gap-4 border-b py-5 transition-colors sm:grid-cols-[4.5rem_1fr_auto] sm:gap-6"
+  class="flex flex-row justify-between border-b-1 border-black py-2 hover:bg-gray-300 active:bg-gray-300 focus:bg-gray-300"
 >
-  <span class="text-ink-soft font-mono text-xs">{stamp}</span>
-
-  <span class="min-w-0">
-    <span
-      class="font-display text-ink group-hover:text-signal block truncate text-lg transition-colors"
-    >
+  <span class="max-w-3xl">
+    <span class="">
       {title}
     </span>
-    <span class="text-ink-soft hidden truncate text-sm sm:block">{summary}</span>
   </span>
 
-  <span class="flex items-center gap-4">
-    <span class="text-ink-soft hidden font-mono text-[11px] md:block">
-      {tags.slice(0, 2).join(' · ')}
-    </span>
-    <span
-      aria-hidden="true"
-      class="text-ink-soft group-hover:text-signal transition-all group-hover:translate-x-1"
-    >
-      →
-    </span>
-  </span>
+  <span class="text-ink-soft text-xs">{stamp}</span>
 </a>

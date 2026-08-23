@@ -1,9 +1,16 @@
 ---
-import Header from '@/components/Header.astro';
-import Footer from '@/components/Footer.astro';
-import { SITE } from '@/site.config';
-import '@/styles/global.css';
-import BaseHead from '@/components/BaseHead.astro';
+import "@/styles/starwind.css";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/site.config";
+import "@/styles/global.css";
+import BaseHead from "@/components/BaseHead.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import { SITE, NAV_LINKS } from "@/site.config";
+
+const currentPath = Astro.url.pathname;
 
 interface Props {
   title: string;
@@ -11,17 +18,88 @@ interface Props {
   image?: string;
 }
 
-const { title, description = SITE.description, image = '/og-image.png' } = Astro.props;
+const {
+  title,
+  description = SITE.description,
+  image = "/og-image.png",
+} = Astro.props;
 ---
 
 <!doctype html>
 <html lang={SITE.locale}>
   <head>
     <BaseHead title={title} description={description} image={image} />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+
+    <!-- 1. Preconnect to speed up handshake times with CDN servers -->
+    <link rel="preconnect" href="https://googleapis.com" />
+    <link rel="preconnect" href="https://gstatic.com" crossorigin />
+
+    <!-- 2. Fetch the Space Mono stylesheet with Regular, Bold, and Italic weights -->
+    <link
+      href="https://googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body id="top" class="bg-paper text-ink">
-    <Header />
+  <body>
+    <!-- <Header /> -->
     <main>
+      <nav
+        class="max-w-3xl w-full items-left mx-auto flex flex-wrap items-center justify-left gap-x-4 gap-y-2 p-6"
+        aria-label="Primary"
+      >
+        {
+          NAV_LINKS.map((link, index) => {
+            const isActive =
+              currentPath === link.href ||
+              currentPath.startsWith(`${link.href}/`);
+            return (
+              <div class="flex items-center gap-x-4">
+                <a
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  class:list={[
+                    "font-mono text-xl font-bold tracking-wide uppercase",
+                    isActive ? "text-signal" : "text-ink-soft hover:text-ink",
+                  ]}
+                >
+                  {link.label}
+                </a>
+                {/* NEW: Renders a visual pipe after every link except the absolute last item */}
+                {index < NAV_LINKS.length - 1 && (
+                  <span
+                    class="font-mono text-base font-black italic select-none text-black antialiased tracking-tighter opacity-70 transform scale-y-125 rotate-6"
+                    style="text-shadow: 1px 1px 0px rgba(255, 0, 0, 0.15), -1px -1px 0px rgba(0, 0, 255, 0.15);"
+                    aria-hidden="true"
+                  >
+                    //
+                  </span>
+                )}{" "}
+              </div>
+            );
+          })
+        }
+
+        {
+          /* Optional secondary pipe before the theme toggle to separate text links from the button actions */
+        }
+        <span
+          class="h-4 w-px bg-[var(--line)] select-none mx-2"
+          aria-hidden="true"></span>
+
+        <!-- <ThemeToggle /> -->
+      </nav>
       <slot />
     </main>
     <Footer />

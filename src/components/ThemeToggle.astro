@@ -1,57 +1,57 @@
 ---
-// Pairs with the no-FOUC inline script in BaseLayout's <head>, which sets
-// the initial .dark class before first paint. This component only handles
-// the click-to-toggle interaction after that.
+/* ThemeToggle.astro */
 ---
 
 <button
+  id="theme-toggle"
   type="button"
-  data-theme-toggle
-  aria-label="Switch between light and dark theme"
-  class="text-ink-soft hover:border-signal hover:text-signal border-line flex h-9 w-9 shrink-0 items-center justify-center rounded-full border transition-colors"
+  class="font-mono text-lg font-bold tracking-wide uppercase text-ink-soft hover:text-ink select-none cursor-pointer"
+  aria-label="Toggle system color theme"
 >
-  <svg
-    class="h-4 w-4 dark:hidden"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.75"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <circle cx="12" cy="12" r="4"></circle>
-    <path
-      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
-    ></path>
-  </svg>
-  <svg
-    class="hidden h-4 w-4 dark:block"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="1.75"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
-  </svg>
+  DARK
 </button>
 
-<script>
-  function initThemeToggle() {
-    const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
-    if (!button || button.dataset.bound) return;
-    button.dataset.bound = 'true';
+<script is:inline>
+  // 1. Instantly runs inline to check localStorage or system preferences before layout paint
+  const getThemePreference = () => {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  };
 
-    button.addEventListener('click', () => {
-      const isDark = document.documentElement.classList.toggle('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-  }
+  const setTheme = (theme) => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  };
 
-  // astro:page-load fires on the first load AND after every client-side
-  // navigation done by <ClientRouter />, so the button stays wired up.
-  document.addEventListener('astro:page-load', initThemeToggle);
+  // Run the theme calculation immediately on initial document parse
+  setTheme(getThemePreference());
+
+  // 2. CLASSIC FIX: Directly bind click listeners on classic DOM window attachment
+  const initToggle = () => {
+    const toggleBtn = document.getElementById("theme-toggle");
+    if (!toggleBtn) return;
+
+    // Clean up old listeners if any are hanging
+    toggleBtn.removeEventListener("click", handleToggleClick);
+    toggleBtn.addEventListener("click", handleToggleClick);
+  };
+
+  const handleToggleClick = () => {
+    const currentTheme = document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+    const nextTheme = currentTheme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+  };
+
+  // Run the button binding logic as soon as the HTML elements hit the script parser
+  initToggle();
 </script>
