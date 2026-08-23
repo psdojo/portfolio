@@ -4,17 +4,22 @@ import { SITE } from "@/site.config";
 interface Props {
   title: string;
   description?: string;
-  image?: string;
 }
 
-const { title: pageTitle, description: pageDescription, image } = Astro.props;
+const { title: pageTitle, description: pageDescription } = Astro.props;
 
 const fullTitle = pageTitle.includes(SITE.name)
   ? pageTitle
   : `${pageTitle} · ${SITE.name}`;
 const description = pageDescription || SITE.description;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const socialImage = new URL(image || "/og-image.png", Astro.site);
+const ogParams = new URLSearchParams({
+  title: pageTitle,
+  description,
+  v: "2",
+});
+
+const socialImage = new URL(`/api/og?${ogParams.toString()}`, Astro.site);
 ---
 
 {/* Global Metadata */}

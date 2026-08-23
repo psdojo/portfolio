@@ -7,6 +7,8 @@ export const GET: APIRoute = ({ url }) => {
     url.searchParams.get("description") ||
     "Linux Systems Administrator";
 
+  const isHome = title.toLowerCase() === "pranjal sharma";
+
   return new ImageResponse(
     {
       type: "div",
@@ -26,19 +28,8 @@ export const GET: APIRoute = ({ url }) => {
             type: "div",
             props: {
               style: {
-                fontSize: 32,
+                fontSize: isHome ? 72 : 34,
                 fontWeight: 700,
-              },
-              children: "PRANJAL SHARMA",
-            },
-          },
-          {
-            type: "div",
-            props: {
-              style: {
-                fontSize: 64,
-                fontWeight: 700,
-                marginTop: 24,
               },
               children: title,
             },
@@ -47,7 +38,7 @@ export const GET: APIRoute = ({ url }) => {
             type: "div",
             props: {
               style: {
-                fontSize: 30,
+                fontSize: 34,
                 marginTop: 24,
                 color: "#666666",
               },
