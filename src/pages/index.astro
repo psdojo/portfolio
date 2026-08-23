@@ -146,7 +146,7 @@ const ossContributions = await fetchGithubContributions("psdojo");
               No recent external commits found on layout runtime.
             </p>
           ) : (
-            ossContributions.map((contrib) => (
+            ossContributions.map((contrib: any) => (
               <div class="flex flex-wrap items-baseline justify-between gap-x-2 border-b border-dashed border-[var(--line)] pb-2">
                 <div class="flex items-center gap-x-2">
                   <a
