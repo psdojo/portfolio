@@ -1,13 +1,19 @@
 // @ts-check
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import react from "@astrojs/react"; // 👈 Added this missing import
 import tailwindcss from "@tailwindcss/vite";
-import react from "@astrojs/react";
+import vercel from "@astrojs/vercel";
+
 // Replace with your production URL after deploying to Vercel / Netlify.
 // It powers the sitemap and the canonical / Open Graph URLs in BaseLayout.
 const SITE_URL = "https://astro-starter-portfolio.vercel.app";
 
 export default defineConfig({
+  output: "server",
+  adapter: vercel({
+    imageService: true,
+  }),
   site: SITE_URL,
 
   integrations: [sitemap(), react()],
@@ -17,7 +23,7 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-  },
+  }, // 👈 This correctly wraps the Vite plugin system required by Tailwind v4
 
   // Astro's built-in Fonts API: self-hosts and optimizes these at build time
   // (no Google-hosted requests, no extra npm packages, automatic preloading).

@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import WorkRow from "@/components/WorkRow.astro";
 import { SITE } from "@/site.config";
-
+import photo from "@/assets/images/photo.png";
 // --- Existing Data Block ---
 const allWork = await getCollection("work", ({ data }) => !data.draft);
 const sorted = [...allWork].sort(
@@ -85,10 +85,7 @@ const ossContributions = await fetchGithubContributions("psdojo");
   <section class="mx-auto max-w-3xl">
     <section class="mx-auto p-6">
       <div class="text-lg border-b border-[var(--line)] flex flex-row gap-4">
-        <img
-          src="public/photo.png"
-          class="h-20 w-20 rounded-full object-cover"
-        />
+        <img src={photo.src} class="h-20 w-20 rounded-full object-cover" />
         <div class="flex flex-col items-start justify-center">
           <p class="font-bold uppercase">Pranjal Sharma</p>
           <p>Linux Systems and Infrastucture</p>
