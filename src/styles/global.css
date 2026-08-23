@@ -19,6 +19,17 @@
   --surface: #efeeea;
 }
 
+.light {
+  color-scheme: light;
+
+  --paper: #e5e5e3;
+  --ink: #15161b;
+  --ink-soft: #5b5d66;
+  --signal: #5b5d66; 
+  --line: #e4e2dc;
+  --surface: #efeeea;
+}
+
 .dark {
   color-scheme: dark;
 
