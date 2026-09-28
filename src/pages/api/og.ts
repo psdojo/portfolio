@@ -4,14 +4,14 @@ import type { APIRoute } from "astro";
 export const GET: APIRoute = ({ url }) => {
   const title = url.searchParams.get("title") || "Pranjal Sharma";
   const description =
-    url.searchParams.get("description") ||
-    "Linux Systems Administrator";
+    url.searchParams.get("description") || "Linux Systems Administrator";
 
   const isHome = title.toLowerCase() === "pranjal sharma";
 
   return new ImageResponse(
     {
       type: "div",
+      key: "root",
       props: {
         style: {
           width: "100%",
@@ -26,6 +26,7 @@ export const GET: APIRoute = ({ url }) => {
         children: [
           {
             type: "div",
+            key: "title",
             props: {
               style: {
                 fontSize: isHome ? 72 : 34,
@@ -36,6 +37,7 @@ export const GET: APIRoute = ({ url }) => {
           },
           {
             type: "div",
+            key: "description",
             props: {
               style: {
                 fontSize: 34,
