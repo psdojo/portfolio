@@ -1,17 +1,9 @@
 ---
-title: Automating Nginx Installation on a Fresh Debian Server
-summary: Automated Nginx installation and initial server configuration on a fresh Debian server.
-role: Linux Systems Administrator
-date: 2026-08-23
-tags: [Linux, Debian, Nginx, Bash, Automation]
-url: https://dev.to/pranjal-sharma/automating-nginx-installation-on-a-fresh-debian-server-5e1l
+title: OpenLiteSpeed - PHP 8.3 JIT Disabled Despite Correct Configuration
+date: 2026-10-01
 featured: true
 draft: false
 ---
-
-
-
-## OpenLiteSpeed: PHP 8.3 JIT Disabled Despite Correct Configuration
 
 ### Problem
 
