@@ -1,59 +1,32 @@
-## OpenLiteSpeed: PHP 8.3 JIT Disabled Despite Correct Configuration
+---
+title: Reproducing a PHP 8.3 JIT / ionCube Compatibility Issue
 
-### Problem
+summary: Reproduced a reported OpenLiteSpeed PHP 8.3 issue where JIT remained disabled despite correct OPcache configuration, then isolated ionCube as the conflicting component.
 
-PHP 8.3 on an OpenLiteSpeed server had JIT configured correctly, but the runtime reported:
+role: Linux Systems Administrator
 
-```text
-JIT = Disabled
-opcache.jit = tracing
-opcac
-he.jit_buffer_size = 16M
-```
+date: 2026-10-01
 
-### Environment
+tags: [OpenLiteSpeed, PHP, OPcache, JIT, ionCube, Linux, Troubleshooting]
 
-* Debian 13
-* OpenLiteSpeed 1.9.2
-* LSPHP 8.3.33
-* OPcache
-* ionCube Loader 15.5.1
+url: https://forum.openlitespeed.org/threads/cannot-enable-php-8-3-jit-for-some-reason-on-debian-13.14524/
 
-### Investigation
+featured: false
 
-I reproduced the environment and verified the **actual web PHP configuration**, rather than relying on the CLI configuration.
+draft: false
 
-With ionCube loaded:
+---
 
-```text
-JIT = Disabled
-enabled = false
-on = false
-```
+Reproduced a reported PHP 8.3 JIT issue on OpenLiteSpeed by testing the runtime with ionCube enabled and disabled under the same configuration.
 
-I then isolated the loaded ionCube extension by disabling its `.ini` file and restarting the LSPHP workers.
+**What I did**
 
-### Resolution
+- Set up Debian 13 with OpenLiteSpeed and LSPHP 8.3
+- Installed OPcache and ionCube Loader
+- Configured `opcache.jit=tracing` with a 16M JIT buffer
+- Verified the actual web PHP configuration
+- Checked JIT status using `phpinfo()` and `opcache_get_status()`
+- Disabled the ionCube extension and restarted LSPHP workers
+- Compared JIT behavior before and after the change
 
-After disabling ionCube:
-
-```text
-JIT = On
-enabled = true
-on = true
-```
-
-### Result
-
-The A/B test showed:
-
-```text
-ionCube enabled  → JIT disabled
-ionCube disabled → JIT enabled
-```
-
-This confirmed an **ionCube/JIT compatibility conflict in this PHP 8.3 environment**.
-
-### What this demonstrated
-
-The investigation involved configuration discovery, runtime verification, extension isolation, process management, and controlled root-cause testing.
+**Result:** With ionCube enabled, PHP reported JIT as disabled despite the correct JIT configuration. After disabling ionCube, JIT became active, confirming an ionCube/JIT compatibility conflict in the reproduced environment.
