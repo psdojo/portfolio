@@ -10,9 +10,9 @@ const work = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      summary: z.string().max(160),
-      role: z.string(),
-      date: z.coerce.date(),
+      summary: z.string().max(160).optional(),
+      role: z.string().optional(),
+      date: z.coerce.date().default(() => new Date()), 
       tags: z.array(z.string()).default([]),
       cover: image().optional(),
       url: z.url().optional(),
