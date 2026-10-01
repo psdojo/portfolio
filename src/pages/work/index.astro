@@ -1,12 +1,22 @@
 ---
-import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import WorkRow from "@/components/WorkRow.astro";
-import SectionHeading from "@/components/SectionHeading.astro";
 
-const allWork = (await getCollection("work", ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const posts = import.meta.glob("../../work/*.md", {
+  eager: true,
+  query: "?raw",
+  import: "default",
+});
+
+const allWork = Object.entries(posts).map(([path, markdown]) => {
+  const content = markdown as string;
+  const match = content.match(/^#\s+(.+)$/m);
+
+  return {
+    id: path.split("/").pop()?.replace(".md", "") ?? "",
+    title: match?.[1]?.trim() ?? "Untitled",
+  };
+});
 ---
 
 <BaseLayout

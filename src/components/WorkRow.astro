@@ -1,24 +1,19 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import { formatDate } from "@/utils/formatDate";
-
 interface Props {
-  entry: CollectionEntry<"work">;
+  entry: {
+    id: string;
+    body?: string;
+  };
 }
 
 const { entry } = Astro.props;
-const { title, summary, date, tags } = entry.data;
 
-const stamp = formatDate(date, "compact");
+const title = entry.body?.match(/^#\s+(.+)$/m)?.[1]?.trim() ?? "Untitled";
 ---
 
 <a
   href={`/work/${entry.id}`}
   class="flex flex-row justify-between border-b-1 border-black py-2 hover:bg-gray-300 active:bg-gray-300 focus:bg-gray-300"
 >
-  <span>
-    {title}
-  </span>
-
-  <span class="text-ink-soft text-xs">{stamp}</span>
+  <span>{title}</span>
 </a>

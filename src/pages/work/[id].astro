@@ -1,35 +1,24 @@
 ---
-import { getCollection, render, type CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Button from "@/components/Button.astro";
-import { formatDate } from "@/utils/formatDate";
 export const prerender = true;
 export async function getStaticPaths() {
-  const entries = await getCollection("work", ({ data }) => !data.draft);
+  const entries = await getCollection("work");
+
   return entries.map((entry) => ({
     params: { id: entry.id },
     props: { entry },
   }));
 }
 
-interface Props {
-  entry: CollectionEntry<"work">;
-}
-
 const { entry } = Astro.props;
-const { title, summary, role, date, tags, url, repo } = entry.data;
 const { Content } = await render(entry);
 
-const formattedDate = formatDate(date);
+const title = entry.body?.match(/^#\s+(.+)$/m)?.[1] ?? entry.id;
 ---
 
-<BaseLayout title={title} description={summary}>
+<BaseLayout title={title}>
   <article class="mx-auto max-w-3xl px-3">
-    <h1
-      class="font-display text-ink max-w-2xl text-3xl font-medium sm:text-4xl"
-    >
-      {title}
-    </h1>
     <div class="prose prose-sm py-6 sm:prose-base max-w-2xl">
       <Content />
     </div>
